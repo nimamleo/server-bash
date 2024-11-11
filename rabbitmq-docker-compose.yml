@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=rabbitmq"
+      - "traefik.http.routers.shop-backend.rule=Host(`rabbitmq-dev.elsa-gallery.shop`)"
+      - "traefik.http.routers.shop-backend.entrypoints=websecure"
+      - "traefik.http.routers.shop-backend.tls.certresolver=myresolver"
+      - "traefik.http.services.shop-backend.loadbalancer.server.port=3010"
+    ports:
+      - 3010:3010
+volumes:
+  rabbitmq_data:
