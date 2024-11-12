@@ -8,6 +8,8 @@ services:
       - 15672:15672
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - rabbitmq
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=rabbitmq"
@@ -17,3 +19,7 @@ services:
       - "traefik.http.services.shop-backend.loadbalancer.server.port=15672"
 volumes:
   rabbitmq_data:
+
+networks:
+  rabbitmq:
+    external: true
