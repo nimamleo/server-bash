@@ -1,33 +1,27 @@
 services:
   traefik:
-    image: traefik:v2.4.8
-    container_name: traefik
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
+    image: traefik:v2.9
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--log.level=DEBUG"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.email=nimamahini81@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
     networks:
       - proxy
-    ports:
-      - 80:80
-      - 443:443
-      - 8082:8082
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik-data/traefik.yml:/traefik.yml:ro
-      - ./traefik-data/acme.json:/acme.json
-#      - ./traefik-data/acme.file.json:/acme.file.json
-      - ./traefik-data/configurations:/configurations
-
-    labels:
-        - "traefik.enable=true"
-        - "traefik.docker.network=proxy"
-        - "traefik.http.routers.traefik.entrypoints=web,websecure"
-        - "traefik.http.routers.traefik.rule=Host(`traefik.elsa-gallery.shop`)"
-        - "traefik.http.routers.traefik.middlewares=traefik@file"
-        - "traefik.http.routers.traefik.service=api@internal"
-        - "traefik.http.routers.traefik.tls=true"
-        - "traefik.http.routers.traefik.tls.certresolver=lets-encrypt"
-        - "traefik.http.services.traefik.loadbalancer.server.port=80"
 
 networks:
   proxy:
