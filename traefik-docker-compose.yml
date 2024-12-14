@@ -21,12 +21,12 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
     networks:
-      - proxy-api
+      - proxy
       - proxy-front
       - proxy-rabbitmq
 
 networks:
-  proxy-api:
+  proxy:
     external: true
   proxy-front:
     external: true
