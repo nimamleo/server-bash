@@ -9,10 +9,10 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
-      - proxy
+      - proxy-rabbitmq
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
+      - "traefik.docker.network=proxy-rabbitmq"
       - "traefik.http.routers.rabbitmq.rule=Host(`rabbitmq.elsa-gallery.shop`)"
       - "traefik.http.routers.rabbitmq.entrypoints=websecure"
       - "traefik.http.routers.rabbitmq.tls.certresolver=myresolver"
@@ -21,5 +21,5 @@ volumes:
   rabbitmq_data:
 
 networks:
-  proxy:
+  proxy-rabbitmq:
     external: true
