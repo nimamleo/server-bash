@@ -1,0 +1,45 @@
+# Data directories and files
+**/data_*
+**/*_data
+**/data/
+**/data/*
+**/chroma-data/
+**/chroma-data/*
+**/mysql_data/
+**/mongodb_data/
+**/rabbitmq_data/
+**/redis_data/
+**/minio_data/
+
+# Specific data directories
+pgsql/data/*
+pgsql/data/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Log files
+*.log
+logs/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp

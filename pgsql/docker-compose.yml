@@ -2,17 +2,12 @@ version: "3.9"
 
 services:
   pgsql:
-    image: postgres:14-alpine
+    image: postgis/postgis:14-3.3
     ports:
       - 5432:5432
     env_file:
       - ./.env
     container_name: pgsql
     volumes:
-      - ~/apps/postgres:/var/lib/postgresql/data
-    networks:
-      - db-back
-
-networks:
-  db-back:
-    external: true
+      - ./data:/var/lib/postgresql/data
+    

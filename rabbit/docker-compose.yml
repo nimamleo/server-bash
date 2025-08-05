@@ -8,18 +8,7 @@ services:
       - 15672:15672
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
-    networks:
-      - proxy-rabbitmq
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=proxy-rabbitmq"
-      - "traefik.http.routers.rabbitmq.rule=Host(`rabbitmq.elsa-gallery.shop`)"
-      - "traefik.http.routers.rabbitmq.entrypoints=websecure"
-      - "traefik.http.routers.rabbitmq.tls.certresolver=myresolver"
-      - "traefik.http.services.rabbitmq.loadbalancer.server.port=15672"
+    
 volumes:
   rabbitmq_data:
 
-networks:
-  proxy-rabbitmq:
-    external: true
