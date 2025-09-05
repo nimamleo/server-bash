@@ -13,33 +13,21 @@ services:
     image: elasticsearch:${ELASTICSEARCH_VERSION}
     networks:
       - temporal-network
+      - db-back
     expose:
       - 9200
     volumes:
       - /var/lib/elasticsearch/data
-  postgresql:
-    container_name: temporal-postgresql
-    environment:
-      POSTGRES_PASSWORD: temporal
-      POSTGRES_USER: temporal
-    image: postgres:${POSTGRESQL_VERSION}
-    networks:
-      - temporal-network
-    expose:
-      - 5432
-    volumes:
-      - /var/lib/postgresql/data
   temporal:
     container_name: temporal
     depends_on:
-      - postgresql
       - elasticsearch
     environment:
       - DB=postgres12
       - DB_PORT=5432
-      - POSTGRES_USER=temporal
-      - POSTGRES_PWD=temporal
-      - POSTGRES_SEEDS=postgresql
+      - POSTGRES_USER=nimamleo
+      - POSTGRES_PWD=root
+      - POSTGRES_SEEDS=pgsql
       - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
       - ENABLE_ES=true
       - ES_SEEDS=elasticsearch
@@ -49,6 +37,7 @@ services:
     image: temporalio/auto-setup:${TEMPORAL_VERSION}
     networks:
       - temporal-network
+      - db-back
       - proxy
     ports:
       - 7233:7233
@@ -56,7 +45,7 @@ services:
       - ./dynamicconfig:/etc/temporal/config/dynamicconfig
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.temporal.rule=Host(`testing-temporal.elsa-gallery.shop`)"
+      - "traefik.http.routers.temporal.rule=Host(`testing-temporal.elsa-gallery.shop`) && PathPrefix(`/api`)"
       - "traefik.http.routers.temporal.entrypoints=websecure"
       - "traefik.http.routers.temporal.tls.certresolver=myresolver"
       - "traefik.http.services.temporal.loadbalancer.server.port=7233"
@@ -95,5 +84,7 @@ networks:
   temporal-network:
     driver: bridge
     name: temporal-network
+  db-back:
+    external: true
   proxy:
     external: true
