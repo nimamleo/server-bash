@@ -1,17 +1,23 @@
-version: "3.4"
+version: "3.9"
 
 services:
   minio:
     image: quay.io/minio/minio
     command: server /data --console-address ":9001"
-    environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
+    env_file:
+      - ./.env
     volumes:
       - minio_data:/data
     ports:
-      - "9000:9000"   # MinIO API
-      - "9001:9001"   # MinIO Console UI
+      - "9000:9000"   
+      - "9001:9001" 
+    networks:
+      - minio-brack
 
 volumes:
   minio_data:
+
+networks:
+  minio-brack:
+    external: true
+

@@ -1,0 +1,18 @@
+# Ignore any subdirectory ending with _data or _volume
+**/*_data/
+**/*_volume/
+
+# Also ignore generic "data" folders inside services
+**/data/
+
+# Optional: ignore logs and db/cache files
+**/*.log
+**/*.rdb
+**/*.aof
+**/*.ldb
+**/*.db
+
+# Ignore local env files (secrets)
+.env
+.env.*
+
