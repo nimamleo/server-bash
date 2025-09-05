@@ -1,7 +1,7 @@
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    image: elasticsearch:7.17.27
     container_name: elasticsearch
     env_file:
       - .env
@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.11.0
+    image: kibana:7.17.0
     container_name: kibana
     env_file:
       - .env
@@ -28,7 +28,7 @@ services:
     restart: unless-stopped
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:8.11.0
+    image: logstash:7.17.0
     container_name: logstash
     env_file:
       - .env
