@@ -22,13 +22,8 @@ services:
       - "./letsencrypt:/letsencrypt"
     networks:
       - proxy
-      - proxy-front
-      - proxy-rabbitmq
+
 
 networks:
   proxy:
-    external: true
-  proxy-front:
-    external: true
-  proxy-rabbitmq:
     external: true
