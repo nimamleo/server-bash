@@ -41,16 +41,25 @@ services:
       - temporal
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
-      - TEMPORAL_CORS_ORIGINS=http://localhost:3000
+      - TEMPORAL_CORS_ORIGINS=https://testing-temporal.elsa-gallery.shop
     image: temporalio/ui:${TEMPORAL_UI_VERSION}
     networks:
       - temporal-network
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.temporal-ui.rule=Host(`testing-temporal.elsa-gallery.shop`)"
+      - "traefik.http.routers.temporal-ui.entrypoints=websecure"
+      - "traefik.http.routers.temporal-ui.tls.certresolver=myresolver"
+      - "traefik.http.services.temporal-ui.loadbalancer.server.port=8080"
     ports:
       - 8080:8080
 networks:
   temporal-network:
     driver: bridge
     name: temporal-network
+  proxy:
+    external: true
   db-back:
     external: true
   elasticsearch_network:
