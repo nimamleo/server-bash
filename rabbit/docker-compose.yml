@@ -13,10 +13,10 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
-      - proxy-rabbitmq
+      - app
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=proxy-rabbitmq"
+      - "traefik.docker.network=app"
       - "traefik.http.routers.rabbitmq.rule=Host(${RABBITMQ_DOMAIN})"
       - "traefik.http.routers.rabbitmq.entrypoints=websecure"
       - "traefik.http.routers.rabbitmq.tls.certresolver=myresolver"
@@ -26,6 +26,6 @@ volumes:
   rabbitmq_data:
 
 networks:
-  proxy-rabbitmq:
+  app:
     external: true
 

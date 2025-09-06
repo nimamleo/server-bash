@@ -11,8 +11,8 @@ services:
     volumes:
       - ./pgsql_volume:/var/lib/postgresql/data
     networks:
-      - db-back
+      - app
 
 networks:
-  db-back:
+  app:
     external: true
