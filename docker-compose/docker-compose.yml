@@ -12,7 +12,7 @@ services:
     image: elasticsearch:${ELASTICSEARCH_VERSION}
     networks:
       - temporal-network
-      - db-back
+      - app
     expose:
       - 9200
     volumes:
@@ -36,7 +36,7 @@ services:
     image: temporalio/auto-setup:${TEMPORAL_VERSION}
     networks:
       - temporal-network
-      - db-back
+      - app
       - proxy
     ports:
       - 7233:7233
@@ -77,7 +77,7 @@ networks:
   temporal-network:
     driver: bridge
     name: temporal-network
-  db-back:
+  app:
     external: true
   proxy:
     external: true
