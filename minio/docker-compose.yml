@@ -13,6 +13,14 @@ services:
       - "9001:9001" 
     networks:
       - app
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.minio.rule=Host(`stage-storage.nearbee.ir`)"
+      - "traefik.http.routers.minio.entrypoints=websecure"
+      - "traefik.http.routers.minio.tls.certresolver=myresolver"
+      - "traefik.http.services.minio.loadbalancer.server.port=9000"
 
 volumes:
   minio_data:
