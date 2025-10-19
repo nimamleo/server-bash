@@ -14,11 +14,6 @@ services:
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-      # Correct WebSocket timeout settings for Traefik v2.9:
-      - "--serversTransport.insecureSkipVerify=true"
-      - "--serversTransport.forwardingTimeouts.dialTimeout=30s"
-      - "--serversTransport.forwardingTimeouts.responseHeaderTimeout=0s"
-      - "--serversTransport.forwardingTimeouts.idleConnTimeout=0s"
     ports:
       - "80:80"
       - "443:443"
