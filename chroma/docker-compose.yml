@@ -3,8 +3,6 @@ services:
     image: chromadb/chroma
     container_name: chromadb
     restart: unless-stopped
-    ports:
-      - "9000:8000"
     volumes:
       - ./chroma-data:/data  
     environment:
