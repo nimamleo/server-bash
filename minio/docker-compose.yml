@@ -12,6 +12,7 @@ services:
       - "9001:9001" 
     networks:
       - app
+      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
@@ -26,4 +27,5 @@ volumes:
 networks:
   app:
     external: true
-
+  proxy:
+    external: true
