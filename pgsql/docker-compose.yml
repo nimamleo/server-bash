@@ -1,8 +1,6 @@
 services:
   pgsql:
     image: postgis/postgis:16-3.4-alpine
-    ports:
-      - 5432:5432
     env_file:
       - ./.env
     container_name: pgsql
