@@ -60,9 +60,10 @@ services:
 
 networks:
   monitoring:
-    driver: bridge
+    external: true
   proxy:
     external: true
+
 
 volumes:
   prometheus-data:
