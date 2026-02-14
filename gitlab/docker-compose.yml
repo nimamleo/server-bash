@@ -1,0 +1,70 @@
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:18.8.4-ce.0
+    container_name: gitlab
+    restart: always
+    hostname: mygitlab.nearbee.ir
+    shm_size: "256m"
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://mygitlab.nearbee.ir'
+        registry_external_url 'https://registry.nearbee.ir'
+        
+        nginx['listen_port'] = 80
+        nginx['listen_https'] = false
+        
+        registry_nginx['enable'] = false
+        
+        registry['enable'] = true
+        registry['registry_http_addr'] = '0.0.0.0:5000'
+        
+        gitlab_rails['registry_enabled'] = true
+        gitlab_rails['registry_host'] = 'registry.nearbee.ir'
+        gitlab_rails['registry_port'] = 443
+        gitlab_rails['registry_api_url'] = 'http://127.0.0.1:5000'
+        
+        postgresql['enable'] = false
+        gitlab_rails['db_adapter'] = 'postgresql'
+        gitlab_rails['db_encoding'] = 'unicode'
+        gitlab_rails['db_host'] = 'pg16'
+        gitlab_rails['db_port'] = 5432
+        gitlab_rails['db_database'] = 'gitlab'
+        gitlab_rails['db_username'] = 'gitlab'
+        gitlab_rails['db_password'] = 'TGKrp24UrRYrXo1186fnhytw'
+        
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+    ports:
+      - "2222:22"
+    expose:
+      - "80"
+      - "5000"
+    volumes:
+      - ./config:/etc/gitlab
+      - ./logs:/var/log/gitlab
+      - ./data:/var/opt/gitlab
+    networks:
+      - proxy
+      - app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      
+      - "traefik.http.routers.gitlab.rule=Host(`mygitlab.nearbee.ir`)"
+      - "traefik.http.routers.gitlab.entrypoints=websecure"
+      - "traefik.http.routers.gitlab.tls=true"
+      - "traefik.http.routers.gitlab.tls.certresolver=myresolver"
+      - "traefik.http.routers.gitlab.service=gitlab"
+      - "traefik.http.services.gitlab.loadbalancer.server.port=80"
+      
+      - "traefik.http.routers.gitlab-registry.rule=Host(`registry.nearbee.ir`)"
+      - "traefik.http.routers.gitlab-registry.entrypoints=websecure"
+      - "traefik.http.routers.gitlab-registry.tls=true"
+      - "traefik.http.routers.gitlab-registry.tls.certresolver=myresolver"
+      - "traefik.http.routers.gitlab-registry.service=gitlab-registry"
+      - "traefik.http.services.gitlab-registry.loadbalancer.server.port=5000"
+
+networks:
+  proxy:
+    external: true
+  app:
+    external: true
