@@ -1,14 +1,21 @@
 services:
-  pgsql:
+  pg16:
     image: postgis/postgis:16-3.4-alpine
-    env_file:
-      - ./.env
-    container_name: pgsql
+    container_name: pg16
+    env_file: ./.env
     volumes:
-      - ./pgsql_volume:/var/lib/postgresql/data
-    networks:
-      - app
+      - ./pg16_data:/var/lib/postgresql/data
+    networks: [app]
+
+  pg18:
+    image: postgis/postgis:18-3.6
+    container_name: pg18
+    env_file: ./.env
+    volumes:
+      - ./pg18_data:/var/lib/postgresql
+    networks: [app]
 
 networks:
   app:
     external: true
+
