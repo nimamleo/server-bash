@@ -1,0 +1,7 @@
+# PostgreSQL data (bind mount + legacy paths)
+data/
+pgsql_volume/
+data_backup*/
+
+# SQL dumps
+*.sql

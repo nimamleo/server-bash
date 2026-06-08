@@ -1,0 +1,5 @@
+# Registry image storage
+data/
+
+# htpasswd credentials
+auth/
