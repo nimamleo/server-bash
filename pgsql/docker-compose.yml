@@ -2,6 +2,7 @@ services:
   pg18:
     image: postgis/postgis:18-3.6
     container_name: pg18
+    restart: always
     env_file: ./.env
     volumes:
       - ./pg18_data:/var/lib/postgresql
