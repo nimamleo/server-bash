@@ -4,6 +4,8 @@ services:
     container_name: pg18
     restart: always
     env_file: ./.env
+    ports:
+      - "5432:5432"
     volumes:
       - ./pg18_data:/var/lib/postgresql
     networks: [app]
@@ -11,4 +13,3 @@ services:
 networks:
   app:
     external: true
-
