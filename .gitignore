@@ -1,6 +1,10 @@
 # macOS
 .DS_Store
 
+# Secrets (copy from .env.example)
+**/.env
+!**/.env.example
+
 # Common Docker bind-mount patterns
 **/*_data/
 **/*_volume/
