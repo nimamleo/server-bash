@@ -3,6 +3,8 @@ version: "3.8"
 networks:
   proxy:
     external: true
+  app:
+    external: true
 
 volumes:
   grafana-data:
@@ -59,11 +61,13 @@ services:
     container_name: uptime-kuma
     networks:
       - proxy
+      - app
     volumes:
       - uptime-kuma-data:/app/data
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
       - "traefik.http.routers.uptime.rule=Host(`uptime.nearbee.ir`)"
       - "traefik.http.routers.uptime.entrypoints=websecure"
       - "traefik.http.routers.uptime.tls.certresolver=myresolver"
